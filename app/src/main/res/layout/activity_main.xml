@@ -35,19 +35,24 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="none"
-            android:drawableRight="@drawable/prev"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/prev"
+            android:onClick="onClickPrev"
+            />
         <Button
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="pause"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/pause"
+            android:onClick="onClickPlayPause"
+            />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="next"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/next"
+            android:onClick="onClickNext"
+            />
     </LinearLayout>
 </LinearLayout>
