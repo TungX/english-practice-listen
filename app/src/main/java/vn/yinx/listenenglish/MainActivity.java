@@ -3,35 +3,38 @@ package vn.yinx.listenenglish;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SeekBar;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp;
     private boolean hasPermission = false;
+    private SeekBar seekbar;
+    private double startTime = 0;
+    private double finalTime = 0;
+    public static int oneTimeOnly = 0;
+    private LyricAdapter lyricAdapter;
+    private ListView lyrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        seekbar = findViewById(R.id.playerSeekBar);
+        lyrics = findViewById(R.id.lyrics);
+        seekbar.setClickable(false);
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -50,9 +53,27 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+
         Log.d("MainActivityOnCreate", "has permission");
+        ArrayList<Sentence> sentences = new ArrayList<>();
+        Sentence sentence = new Sentence();
+        sentence.setContent("Hello, I am Smt");
+        sentences.add(sentence);
+        lyricAdapter = new LyricAdapter(sentences);
+        lyrics.setAdapter(lyricAdapter);
+
 //        mp = new MediaPlayer();
         mp = MediaPlayer.create(this.getBaseContext(), R.raw.kiss_the_rain);
+        new AudioRunning(this, mp).start();
+        finalTime = mp.getDuration();
+        startTime = mp.getCurrentPosition();
+
+        if (oneTimeOnly == 0) {
+            seekbar.setMax((int) finalTime);
+            oneTimeOnly = 1;
+        }
+        seekbar.setProgress((int) startTime);
 //        File sdCard = Environment.getStorageDirectory();
 //        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
 //        ArrayList<File> files = new ArrayList<>();
@@ -70,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void updateSeek(int time) {
+        seekbar.setProgress(time);
+    }
+
     public void loadAudioFiles(ArrayList<File> files, File file) {
         if (files.size() > 0) {
             return;
@@ -81,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-//        Log.d("MainActivityOnCreate", "loadAudioFiles: " + file.getName());
         if (!file.isDirectory()) {
             return;
         }
