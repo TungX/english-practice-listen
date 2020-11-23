@@ -3,11 +3,13 @@ package vn.yinx.listenenglish;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -48,14 +51,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         Log.d("MainActivityOnCreate", "has permission");
-        mp = new MediaPlayer();
-        File sdCard = Environment.getStorageDirectory();
-        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
-        ArrayList<File> files = new ArrayList<>();
-        loadAudioFiles(files, sdCard);
-
-        for (File file : files) {
-            Log.d("MainActivityOnCreate", file.getAbsolutePath());
+//        mp = new MediaPlayer();
+        mp = MediaPlayer.create(this.getBaseContext(), R.raw.kiss_the_rain);
+//        File sdCard = Environment.getStorageDirectory();
+//        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
+//        ArrayList<File> files = new ArrayList<>();
+//        loadAudioFiles(files, sdCard);
+        try {
+//            mp.setDataSource(files.get(0).getAbsolutePath());
+//            mp.prepare();
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -64,11 +71,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAudioFiles(ArrayList<File> files, File file) {
+        if (files.size() > 0) {
+            return;
+        }
         if (file.isFile()) {
             if (file.getName().toLowerCase().endsWith("mp3")) {
                 files.add(file);
             }
-
             return;
         }
 
