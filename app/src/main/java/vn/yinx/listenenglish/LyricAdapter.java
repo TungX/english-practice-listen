@@ -50,6 +50,11 @@ public class LyricAdapter extends BaseAdapter {
             }
         });
         Button btnReload = viewSentence.findViewById(R.id.lyric_sentence_reload);
+        if (sentences.get(position).isRepeating()) {
+            btnReload.setBackgroundResource(R.drawable.cancel);
+        } else {
+            btnReload.setBackgroundResource(R.drawable.repeat);
+        }
         btnReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

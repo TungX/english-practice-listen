@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -47,25 +50,29 @@ public class MainActivity extends AppCompatActivity {
 
         while (!hasPermission) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 Log.d("MainActivityOnCreate", "check permission");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-
         Log.d("MainActivityOnCreate", "has permission");
         ArrayList<Sentence> sentences = new ArrayList<>();
-        Sentence sentence = new Sentence();
-        sentence.setContent("Hello, I am Smt");
-        sentences.add(sentence);
+        for (int i = 0; i < 1000; i++) {
+            Sentence sentence = new Sentence();
+            sentence.setStart(i * 500);
+            sentence.setEnd(sentence.getStart() + 490);
+            sentence.setContent("Start = " + sentence.getStart() + "; Finish = " + sentence.getEnd());
+            sentences.add(sentence);
+        }
         lyricAdapter = new LyricAdapter(sentences);
         lyrics.setAdapter(lyricAdapter);
 
+
 //        mp = new MediaPlayer();
         mp = MediaPlayer.create(this.getBaseContext(), R.raw.kiss_the_rain);
-        new AudioRunning(this, mp).start();
+        new AudioRunning(this, mp, sentences).start();
         finalTime = mp.getDuration();
         startTime = mp.getCurrentPosition();
 
@@ -91,8 +98,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void updateSeek(int time) {
+    long startTouch = 0;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        startTouch = System.currentTimeMillis();
+        Log.d("updateSeek", "Start touch " + startTouch);
+        return super.onTouchEvent(event);
+    }
+
+    public void updateSeek(int time, int position) {
+        Log.d("updateSeek", "Time: " + time);
         seekbar.setProgress(time);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                lyricAdapter.notifyDataSetChanged();
+                if (System.currentTimeMillis() - startTouch > 3000) {
+                    lyrics.smoothScrollToPositionFromTop(position, 500);
+                }
+
+            }
+        });
+
     }
 
     public void loadAudioFiles(ArrayList<File> files, File file) {

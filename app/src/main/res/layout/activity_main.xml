@@ -20,50 +20,49 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <ScrollView
+        <ListView
+            android:id="@+id/lyrics"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ListView
-                android:id="@+id/lyrics"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </ScrollView>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
         <SeekBar
             android:id="@+id/playerSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
+
         <Button
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/prev"
-            android:onClick="onClickPrev"
-            />
+            android:onClick="onClickPrev" />
+
         <Button
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/pause"
-            android:onClick="onClickPlayPause"
-            />
+            android:onClick="onClickPlayPause" />
+
         <Button
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/next"
-            android:onClick="onClickNext"
-            />
+            android:onClick="onClickNext" />
     </LinearLayout>
 </LinearLayout>
