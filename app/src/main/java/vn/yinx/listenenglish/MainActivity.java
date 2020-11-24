@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Sentence> sentences = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Sentence sentence = new Sentence();
-            sentence.setStart(i * 500);
-            sentence.setEnd(sentence.getStart() + 490);
+            sentence.setStart(i * 2000);
+            sentence.setEnd(sentence.getStart() + 1990);
             sentence.setContent("Start = " + sentence.getStart() + "; Finish = " + sentence.getEnd());
             sentences.add(sentence);
         }
@@ -110,16 +110,19 @@ public class MainActivity extends AppCompatActivity {
     public void updateSeek(int time, int position) {
         Log.d("updateSeek", "Time: " + time);
         seekbar.setProgress(time);
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                lyricAdapter.notifyDataSetChanged();
-                if (System.currentTimeMillis() - startTouch > 3000) {
-                    lyrics.smoothScrollToPositionFromTop(position, 500);
-                }
+        if (position > -1) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    lyricAdapter.notifyDataSetChanged();
+                    if (System.currentTimeMillis() - startTouch > 3000) {
+                        lyrics.smoothScrollToPositionFromTop(position, 500);
+                    }
 
-            }
-        });
+                }
+            });
+        }
+
 
     }
 

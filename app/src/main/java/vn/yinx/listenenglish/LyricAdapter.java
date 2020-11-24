@@ -1,5 +1,6 @@
 package vn.yinx.listenenglish;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,11 @@ public class LyricAdapter extends BaseAdapter {
 
         TextView content = viewSentence.findViewById(R.id.sentence_content);
         content.setText(sentence.getContent());
+        if(sentence.isActive()){
+            content.setTextColor(Color.parseColor("#FF8C00"));
+        }else {
+            content.setTextColor(Color.BLACK);
+        }
         content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,11 +56,6 @@ public class LyricAdapter extends BaseAdapter {
             }
         });
         Button btnReload = viewSentence.findViewById(R.id.lyric_sentence_reload);
-        if (sentences.get(position).isRepeating()) {
-            btnReload.setBackgroundResource(R.drawable.cancel);
-        } else {
-            btnReload.setBackgroundResource(R.drawable.repeat);
-        }
         btnReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

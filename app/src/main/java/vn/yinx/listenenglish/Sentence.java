@@ -6,8 +6,16 @@ public class Sentence {
     private long start;
     private long end;
 
+    private boolean isActive = false;
     private boolean isRepeating = false;
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     public int getId() {
         return id;
