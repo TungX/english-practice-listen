@@ -3,8 +3,8 @@ package vn.yinx.listenenglish;
 public class Sentence {
     private int id;
     private String content;
-    private long start;
-    private long end;
+    private int start;
+    private int end;
 
     private boolean isActive = false;
     private boolean isRepeating = false;
@@ -33,11 +33,11 @@ public class Sentence {
         this.content = content;
     }
 
-    public long getStart() {
+    public int getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    public void setStart(int start) {
         this.start = start;
     }
 
@@ -45,7 +45,7 @@ public class Sentence {
         return end;
     }
 
-    public void setEnd(long end) {
+    public void setEnd(int end) {
         this.end = end;
     }
 

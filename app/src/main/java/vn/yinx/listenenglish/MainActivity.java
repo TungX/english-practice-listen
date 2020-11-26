@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 
@@ -29,12 +30,15 @@ public class MainActivity extends AppCompatActivity {
     public static int oneTimeOnly = 0;
     private LyricAdapter lyricAdapter;
     private ListView lyrics;
+    private Button btnPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Stores.mainActivity = this;
         setContentView(R.layout.activity_main);
         seekbar = findViewById(R.id.playerSeekBar);
+        btnPlay = findViewById(R.id.btn_play);
         lyrics = findViewById(R.id.lyrics);
         seekbar.setClickable(false);
 
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             Sentence sentence = new Sentence();
             sentence.setStart(i * 2000);
             sentence.setEnd(sentence.getStart() + 1990);
-            sentence.setContent("Start = " + sentence.getStart() + "; Finish = " + sentence.getEnd());
+            sentence.setContent("Sentence at " + i);
             sentences.add(sentence);
         }
         lyricAdapter = new LyricAdapter(sentences);
@@ -72,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
 //        mp = new MediaPlayer();
         mp = MediaPlayer.create(this.getBaseContext(), R.raw.kiss_the_rain);
-        new AudioRunning(this, mp, sentences).start();
+        Stores.setMp(mp);
+        Stores.setCurrentSentence(0);
+        new AudioRunning(this, sentences).start();
         finalTime = mp.getDuration();
         startTime = mp.getCurrentPosition();
 
@@ -118,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                     if (System.currentTimeMillis() - startTouch > 3000) {
                         lyrics.smoothScrollToPositionFromTop(position, 500);
                     }
-
                 }
             });
         }
@@ -157,8 +162,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClickPlayPause(View view) {
+    public void switchPlayIcon(){
+        if (Stores.getMp().isPlaying()) {
+            Stores.getMp().pause();
+            btnPlay.setBackgroundResource(R.drawable.play);
+        } else {
+            Stores.getMp().start();
+            btnPlay.setBackgroundResource(R.drawable.pause);
+        }
+    }
 
+    public void onClickPlayPause(View view) {
+        switchPlayIcon();
     }
 
     @Override
