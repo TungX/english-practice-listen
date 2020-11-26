@@ -1,17 +1,14 @@
 package vn.yinx.listenenglish;
 
-import android.media.MediaPlayer;
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class AudioRunning extends Thread {
-    private MainActivity mainActivity;
+    private FragmentPlay fragmentPlay;
     private ArrayList<Sentence> sentences;
     private LyricAdapter lyricAdapter;
 
-    public AudioRunning(MainActivity mainActivity,  ArrayList<Sentence> sentences) {
-        this.mainActivity = mainActivity;
+    public AudioRunning(FragmentPlay fragmentPlay, ArrayList<Sentence> sentences) {
+        this.fragmentPlay = fragmentPlay;
         this.sentences = sentences;
     }
 
@@ -43,7 +40,7 @@ public class AudioRunning extends Thread {
                 positionChange = i;
                 break;
             }
-            this.mainActivity.updateSeek(Stores.getMp().getCurrentPosition(), positionChange);
+            this.fragmentPlay.updateSeek(Stores.getMp().getCurrentPosition(), positionChange);
         }
 
     }

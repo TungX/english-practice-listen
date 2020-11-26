@@ -36,9 +36,6 @@ public class LyricAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View viewSentence = View.inflate(parent.getContext(), R.layout.sentence_lyric, null);
-//        if (convertView == null) {
-//            viewSentence = View.inflate(parent.getContext(), R.layout.sentence_lyric, null);
-//        } else viewSentence = convertView;
 
         Sentence sentence = getItem(position);
 
@@ -55,14 +52,14 @@ public class LyricAdapter extends BaseAdapter {
                 Log.d("OnClick", "Click at sentence " + position);
                 if(Stores.getCurrentSentence() != position){
                     sentences.get(Stores.getCurrentSentence()).setActive(false);
-                    Stores.mainActivity.updateSeek(sentences.get(position).getStart(), position);
+                    Stores.fragmentPlay.updateSeek(sentences.get(position).getStart(), position);
                 }
                 Stores.getMp().seekTo(sentences.get(position).getStart());
                 Stores.setCurrentSentence(position);
                 sentences.get(Stores.getCurrentSentence()).setActive(true);
                 content.setTextColor(Color.parseColor("#FF8C00"));
                 if(!Stores.getMp().isPlaying()){
-                    Stores.mainActivity.switchPlayIcon();
+                    Stores.fragmentPlay.switchPlayIcon();
                 }
             }
         });

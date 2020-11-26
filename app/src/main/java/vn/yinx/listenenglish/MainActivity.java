@@ -5,42 +5,28 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SeekBar;
+import android.view.MenuItem;
 
-import java.io.File;
-import java.util.ArrayList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mp;
     private boolean hasPermission = false;
-    private SeekBar seekbar;
-    private double startTime = 0;
-    private double finalTime = 0;
-    public static int oneTimeOnly = 0;
-    private LyricAdapter lyricAdapter;
-    private ListView lyrics;
-    private Button btnPlay;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Stores.mainActivity = this;
         setContentView(R.layout.activity_main);
-        seekbar = findViewById(R.id.playerSeekBar);
-        btnPlay = findViewById(R.id.btn_play);
-        lyrics = findViewById(R.id.lyrics);
-        seekbar.setClickable(false);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -61,119 +47,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("MainActivityOnCreate", "has permission");
-        ArrayList<Sentence> sentences = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            Sentence sentence = new Sentence();
-            sentence.setStart(i * 2000);
-            sentence.setEnd(sentence.getStart() + 1990);
-            sentence.setContent("Sentence at " + i);
-            sentences.add(sentence);
-        }
-        lyricAdapter = new LyricAdapter(sentences);
-        lyrics.setAdapter(lyricAdapter);
-
-
-//        mp = new MediaPlayer();
-        mp = MediaPlayer.create(this.getBaseContext(), R.raw.kiss_the_rain);
-        Stores.setMp(mp);
-        Stores.setCurrentSentence(0);
-        new AudioRunning(this, sentences).start();
-        finalTime = mp.getDuration();
-        startTime = mp.getCurrentPosition();
-
-        if (oneTimeOnly == 0) {
-            seekbar.setMax((int) finalTime);
-            oneTimeOnly = 1;
-        }
-        seekbar.setProgress((int) startTime);
-//        File sdCard = Environment.getStorageDirectory();
-//        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
-//        ArrayList<File> files = new ArrayList<>();
-//        loadAudioFiles(files, sdCard);
-        try {
-//            mp.setDataSource(files.get(0).getAbsolutePath());
-//            mp.prepare();
-            mp.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-//        File dir = new File(sdCard, "/f-faces/images/" + format.format(date));
-
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        openFragment(FragmentPlay.newInstance());
     }
 
-    long startTouch = 0;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        startTouch = System.currentTimeMillis();
-        Log.d("updateSeek", "Start touch " + startTouch);
-        return super.onTouchEvent(event);
-    }
-
-    public void updateSeek(int time, int position) {
-        Log.d("updateSeek", "Time: " + time);
-        seekbar.setProgress(time);
-        if (position > -1) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
-                public void run() {
-                    lyricAdapter.notifyDataSetChanged();
-                    if (System.currentTimeMillis() - startTouch > 3000) {
-                        lyrics.smoothScrollToPositionFromTop(position, 500);
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_home:
+                        case R.id.navigation_playlist:
+                            openFragment(FragmentPlay.newInstance());
+                            return true;
+                        case R.id.music:
+//                                openFragment(NotificationFragment.newInstance("", ""));
+                            return true;
                     }
+                    return false;
                 }
-            });
-        }
+            };
 
-
-    }
-
-    public void loadAudioFiles(ArrayList<File> files, File file) {
-        if (files.size() > 0) {
-            return;
-        }
-        if (file.isFile()) {
-            if (file.getName().toLowerCase().endsWith("mp3")) {
-                files.add(file);
-            }
-            return;
-        }
-
-        if (!file.isDirectory()) {
-            return;
-        }
-        File[] tfs = file.listFiles();
-        if (tfs == null) {
-            return;
-        }
-        for (File fi : tfs) {
-            loadAudioFiles(files, fi);
-        }
-    }
-
-    public void onClickPrev(View view) {
-
-    }
-
-    public void onClickNext(View view) {
-
-    }
-
-    public void switchPlayIcon(){
-        if (Stores.getMp().isPlaying()) {
-            Stores.getMp().pause();
-            btnPlay.setBackgroundResource(R.drawable.play);
-        } else {
-            Stores.getMp().start();
-            btnPlay.setBackgroundResource(R.drawable.pause);
-        }
-    }
-
-    public void onClickPlayPause(View view) {
-        switchPlayIcon();
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
