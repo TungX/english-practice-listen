@@ -2,7 +2,6 @@ package vn.yinx.listenenglish;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,13 +11,16 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import vn.yinx.listenenglish.entity.FolderMusic;
+import vn.yinx.listenenglish.entity.Playlist;
+import vn.yinx.listenenglish.fragment.FragmentHome;
+import vn.yinx.listenenglish.fragment.FragmentPlay;
+
 public class MainActivity extends AppCompatActivity {
-    MediaPlayer mp;
     private boolean hasPermission = false;
     private BottomNavigationView bottomNavigation;
 
@@ -27,28 +29,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
-
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        openFragment(FragmentHome.newInstance());
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.INTERNET, Manifest.permission.WAKE_LOCK,
                             Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE}, 0);
-        } else {
-            hasPermission = true;
         }
 
-        while (!hasPermission) {
-            try {
-                Thread.sleep(500);
-                Log.d("MainActivityOnCreate", "check permission");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        DatabaseHelper.init(this.getBaseContext());
+//        Config config = new Config();
+//        try {
+//            ArrayList<Config> configs = config.getAll();
+//            configs.add(config);
+//            Stores.config = configs.get(0);
+//        } catch (Exception e) {
+//            Stores.config = config;
+//        }
+//        if (Stores.config.getId() == -1) {
+//            try {
+//                long id = Stores.config.create();
+//                Stores.config.setId(id);
+//            } catch (Exception e) {
+//
+//            }
+//        }
+        Playlist playlist = new Playlist();
+        try {
+            Stores.playlists = playlist.getAll();
+            Playlist p1 = new Playlist();
+            p1.setName("abdef");
+            Stores.playlists.add(p1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(FragmentPlay.newInstance());
+        FolderMusic folderMusic = new FolderMusic();
+        try {
+            Stores.folderMusics = folderMusic.getAll();
+            FolderMusic fm = new FolderMusic();
+            fm.setName("Music 1");
+            Stores.folderMusics.add(fm);
+
+            FolderMusic fm2 = new FolderMusic();
+            fm2.setName("Music 2");
+            Stores.folderMusics.add(fm2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -57,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
+                            openFragment(FragmentHome.newInstance());
                         case R.id.navigation_playlist:
                             openFragment(FragmentPlay.newInstance());
                             return true;

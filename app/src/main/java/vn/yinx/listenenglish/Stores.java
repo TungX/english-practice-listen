@@ -2,10 +2,20 @@ package vn.yinx.listenenglish;
 
 import android.media.MediaPlayer;
 
+import java.util.ArrayList;
+
+import vn.yinx.listenenglish.entity.Config;
+import vn.yinx.listenenglish.entity.FolderMusic;
+import vn.yinx.listenenglish.entity.Playlist;
+import vn.yinx.listenenglish.fragment.FragmentPlay;
+
 public class Stores {
     private static MediaPlayer mp;
     private static int currentSentence;
     public static FragmentPlay fragmentPlay;
+    public static Config config;
+    public static ArrayList<Playlist> playlists;
+    public static ArrayList<FolderMusic> folderMusics;
     public static synchronized void setMp(MediaPlayer mp){
         Stores.mp = mp;
     }

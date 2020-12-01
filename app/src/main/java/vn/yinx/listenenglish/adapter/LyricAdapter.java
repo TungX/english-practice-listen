@@ -1,4 +1,4 @@
-package vn.yinx.listenenglish;
+package vn.yinx.listenenglish.adapter;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import vn.yinx.listenenglish.R;
+import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.entity.Sentence;
 
 public class LyricAdapter extends BaseAdapter {
 

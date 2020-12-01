@@ -2,6 +2,10 @@ package vn.yinx.listenenglish;
 
 import java.util.ArrayList;
 
+import vn.yinx.listenenglish.adapter.LyricAdapter;
+import vn.yinx.listenenglish.entity.Sentence;
+import vn.yinx.listenenglish.fragment.FragmentPlay;
+
 public class AudioRunning extends Thread {
     private FragmentPlay fragmentPlay;
     private ArrayList<Sentence> sentences;

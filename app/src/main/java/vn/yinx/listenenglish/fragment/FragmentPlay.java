@@ -1,4 +1,4 @@
-package vn.yinx.listenenglish;
+package vn.yinx.listenenglish.fragment;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,9 +15,14 @@ import android.widget.SeekBar;
 import java.io.File;
 import java.util.ArrayList;
 
+import vn.yinx.listenenglish.AudioRunning;
+import vn.yinx.listenenglish.adapter.LyricAdapter;
+import vn.yinx.listenenglish.R;
+import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.entity.Sentence;
+
 public class FragmentPlay extends BaseFragment implements View.OnClickListener{
     MediaPlayer mp;
-    private boolean hasPermission = false;
     private SeekBar seekbar;
     private double startTime = 0;
     private double finalTime = 0;

@@ -1,4 +1,7 @@
-package vn.yinx.listenenglish;
+package vn.yinx.listenenglish.entity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Sentence {
     private int id;
@@ -8,6 +11,15 @@ public class Sentence {
 
     private boolean isActive = false;
     private boolean isRepeating = false;
+
+    public Sentence(){
+
+    }
+    public Sentence(JSONObject data) throws Exception {
+        content = data.getString("content");
+        start = data.getInt("start");
+        end = data.getInt("end");
+    }
 
     public boolean isActive() {
         return isActive;
