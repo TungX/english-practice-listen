@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
+import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.entity.Sentence;
 
 public class FolderAdapter extends BaseAdapter {
@@ -50,6 +52,19 @@ public class FolderAdapter extends BaseAdapter {
         viewSentence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FolderMusic folder = getItem(position);
+                ListMusic listMusic = new ListMusic();
+                listMusic.setName(folder.getName());
+                try {
+                    if (folder.getFiles() == null) {
+                        FileMusic fileMusic = new FileMusic();
+                        ArrayList<FileMusic> files = fileMusic.getAll("SELECT * FROM " + fileMusic.getTableName() + " WHERE _folderId = " + folder.getId());
+                        folder.setFiles(files);
+                    }
+                    listMusic.setFiles(folder.getFiles());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         return viewSentence;

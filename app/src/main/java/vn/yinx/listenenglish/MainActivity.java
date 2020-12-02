@@ -40,28 +40,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         DatabaseHelper.init(this.getBaseContext());
-//        Config config = new Config();
-//        try {
-//            ArrayList<Config> configs = config.getAll();
-//            configs.add(config);
-//            Stores.config = configs.get(0);
-//        } catch (Exception e) {
-//            Stores.config = config;
-//        }
-//        if (Stores.config.getId() == -1) {
-//            try {
-//                long id = Stores.config.create();
-//                Stores.config.setId(id);
-//            } catch (Exception e) {
-//
-//            }
-//        }
+
         Playlist playlist = new Playlist();
         try {
             Stores.playlists = playlist.getAll();
-            Playlist p1 = new Playlist();
-            p1.setName("abdef");
-            Stores.playlists.add(p1);
+            for (int i = 0; i < 10; i++) {
+                Playlist p1 = new Playlist();
+                p1.setName("Playlist " + (i + 1));
+                Stores.playlists.add(p1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,13 +56,11 @@ public class MainActivity extends AppCompatActivity {
         FolderMusic folderMusic = new FolderMusic();
         try {
             Stores.folderMusics = folderMusic.getAll();
-            FolderMusic fm = new FolderMusic();
-            fm.setName("Music 1");
-            Stores.folderMusics.add(fm);
-
-            FolderMusic fm2 = new FolderMusic();
-            fm2.setName("Music 2");
-            Stores.folderMusics.add(fm2);
+            for (int i = 0; i < 10; i++) {
+                FolderMusic fm = new FolderMusic();
+                fm.setName("Music " + (i + 1));
+                Stores.folderMusics.add(fm);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
