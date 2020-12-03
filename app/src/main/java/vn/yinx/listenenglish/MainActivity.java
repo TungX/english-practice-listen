@@ -19,11 +19,12 @@ import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentHome;
 import vn.yinx.listenenglish.fragment.FragmentPlay;
+import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
 public class MainActivity extends AppCompatActivity {
     private boolean hasPermission = false;
     private BottomNavigationView bottomNavigation;
-
+    private int currentNavigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(FragmentHome.newInstance());
+        currentNavigation = R.id.navigation_home;
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         DatabaseHelper.init(this.getBaseContext());
-
+        Stores.mainActivity = this;
         Playlist playlist = new Playlist();
         try {
             Stores.playlists = playlist.getAll();
@@ -66,17 +68,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    if(item.getItemId() == currentNavigation){
+                        return true;
+                    }
+                    currentNavigation = item.getItemId();
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
                             openFragment(FragmentHome.newInstance());
+                            return true;
                         case R.id.navigation_playlist:
-                            openFragment(FragmentPlay.newInstance());
+                            openFragment(FragmentPlaylist.newInstance(null));
                             return true;
                         case R.id.music:
+                            openFragment(FragmentPlay.newInstance());
 //                                openFragment(NotificationFragment.newInstance("", ""));
                             return true;
                     }

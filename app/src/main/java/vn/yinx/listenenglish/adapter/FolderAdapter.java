@@ -16,6 +16,8 @@ import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.entity.Sentence;
+import vn.yinx.listenenglish.fragment.FragmentPlay;
+import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
 public class FolderAdapter extends BaseAdapter {
 
@@ -62,6 +64,12 @@ public class FolderAdapter extends BaseAdapter {
                         folder.setFiles(files);
                     }
                     listMusic.setFiles(folder.getFiles());
+                    for (int i = 0; i < 10; i++) {
+                        FileMusic fm = new FileMusic();
+                        fm.setName("File " + (i + 1));
+                        listMusic.getFiles().add(fm);
+                    }
+                    Stores.mainActivity.openFragment(FragmentPlaylist.newInstance(listMusic));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

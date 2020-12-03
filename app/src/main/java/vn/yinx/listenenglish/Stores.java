@@ -11,6 +11,7 @@ import vn.yinx.listenenglish.fragment.FragmentPlay;
 
 public class Stores {
     private static MediaPlayer mp;
+    public static MainActivity mainActivity;
     private static int currentSentence;
     public static FragmentPlay fragmentPlay;
     public static Config config;
