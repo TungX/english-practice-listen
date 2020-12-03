@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +25,6 @@ import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 public class MainActivity extends AppCompatActivity {
     private boolean hasPermission = false;
     private BottomNavigationView bottomNavigation;
-    private int currentNavigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(FragmentHome.newInstance());
-        currentNavigation = R.id.navigation_home;
+        Stores.currentNavigation = R.id.navigation_home;
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if(item.getItemId() == currentNavigation){
+                    if(item.getItemId() == Stores.currentNavigation){
                         return true;
                     }
-                    currentNavigation = item.getItemId();
+                    Stores.currentNavigation = item.getItemId();
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
                             openFragment(FragmentHome.newInstance());
@@ -106,10 +106,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 0) {// If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // permission was granted, yay! Do
                 hasPermission = true;
-            }  // permission denied, boo! Disable the
-            // functionality that depends on this permission.
+            }
         }
     }
 }

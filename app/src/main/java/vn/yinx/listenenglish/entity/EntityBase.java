@@ -43,18 +43,21 @@ public class EntityBase<T> {
             }
             switch (f.getType().getName().toLowerCase()) {
                 case "java.lang.boolean":
-                    sb.append(fieldName).append(" INTEGER DEFAULT 0,");
-                    break;
                 case "boolean":
-                    sb.append(fieldName).append(" INTEGER DEFAULT 0,");
+                    sb.append(fieldName).append(" INTEGER DEFAULT 0, ");
+                    break;
+                case "java.lang.long":
+                case "long":
+                    sb.append(fieldName).append(" INTEGER, ");
                     break;
                 default:
-                    sb.append(fieldName).append(" TEXT,");
+                    sb.append(fieldName).append(" TEXT, ");
             }
 
         }
         sb.deleteCharAt(sb.length() - 1);
         sb.append(")");
+        Log.d("DataBase", sb.toString());
         return sb.toString();
     }
 

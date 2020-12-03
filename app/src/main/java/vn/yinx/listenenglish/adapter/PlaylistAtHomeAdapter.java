@@ -1,10 +1,10 @@
 package vn.yinx.listenenglish.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,14 +17,16 @@ import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
+import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
-    private ArrayList<FolderMusic> folderMusics;
+public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAdapter.ViewHolder> {
+
+    private ArrayList<Playlist> playlists;
     private Context context;
 
-    public FolderAdapter(Context context, ArrayList<FolderMusic> folderMusics) {
-        this.folderMusics = folderMusics;
+    public PlaylistAtHomeAdapter(Context context, ArrayList<Playlist> folderMusics) {
+        this.playlists = folderMusics;
         this.context = context;
     }
 
@@ -32,24 +34,24 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        View view = inflater.inflate(R.layout.item_folder, parent, false);
-        return new ViewHolder(view);
+        View view = inflater.inflate(R.layout.item_playlist, parent, false);
+        return new PlaylistAtHomeAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FolderMusic folder = this.folderMusics.get(position);
-        holder.content.setText(folder.getName());
+    public void onBindViewHolder(@NonNull PlaylistAtHomeAdapter.ViewHolder holder, int position) {
+        Playlist playlist = this.playlists.get(position);
+        holder.content.setText(playlist.getName());
     }
 
     @Override
     public long getItemId(int position) {
-        return this.folderMusics.get(position).getId();
+        return this.playlists.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return folderMusics.size();
+        return this.playlists.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,13 +60,13 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            content = itemView.findViewById(R.id.folder_name);
+            content = itemView.findViewById(R.id.playlist_name);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            FolderMusic folder = folderMusics.get(position);
+            Playlist folder = playlists.get(position);
             ListMusic listMusic = new ListMusic();
             listMusic.setName(folder.getName());
             try {

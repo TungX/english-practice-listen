@@ -7,16 +7,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
-import vn.yinx.listenenglish.adapter.PlaylistAdapter;
+import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
 
 public class FragmentHome extends BaseFragment implements View.OnClickListener{
     private LinearLayout folderArea;
     private FolderAdapter folderAdapter;
-    private PlaylistAdapter playlistAdapter;
-    private ListView folders, playlists;
+    private PlaylistAtHomeAdapter playlistAtHomeAdapter;
+    private RecyclerView folders, playlists;
     public static FragmentHome newInstance() {
         FragmentHome fragment = new FragmentHome();
         Bundle args = new Bundle();
@@ -39,13 +42,17 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     public void init() {
         folders = findViewById(R.id.folders);
         folderArea = findViewById(R.id.folder_area);
-        folderAdapter = new FolderAdapter(Stores.folderMusics);
+        LinearLayoutManager layoutManagerFolder = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        folders.setLayoutManager(layoutManagerFolder);
+        folderAdapter = new FolderAdapter(mContext, Stores.folderMusics);
         folders.setAdapter(folderAdapter);
         findViewById(R.id.btn_showmore).setOnClickListener(this);
 
         playlists = findViewById(R.id.playlists);
-        playlistAdapter = new PlaylistAdapter(Stores.playlists);
-        playlists.setAdapter(playlistAdapter);
+        LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        playlists.setLayoutManager(layoutManagerPlaylist);
+        playlistAtHomeAdapter = new PlaylistAtHomeAdapter(mContext, Stores.playlists);
+        playlists.setAdapter(playlistAtHomeAdapter);
 //        File sdCard = Environment.getStorageDirectory();
 //        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
 //        ArrayList<File> files = new ArrayList<>();

@@ -8,14 +8,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 
-public class PlaylistAdapter extends BaseAdapter {
+public class PlaylistAdapterOfArea extends BaseAdapter {
 
     private ArrayList<Playlist> playlists;
 
-    public PlaylistAdapter(ArrayList<Playlist> folderMusics) {
+    public PlaylistAdapterOfArea(ArrayList<Playlist> folderMusics) {
         this.playlists = folderMusics;
     }
 
@@ -36,7 +35,13 @@ public class PlaylistAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View viewSentence = View.inflate(parent.getContext(), R.layout.item_playlist, null);
+        View viewSentence;
+
+        if(position == 0){
+            viewSentence = View.inflate(parent.getContext(), R.layout.item_playlist, null);
+        }else{
+            viewSentence = View.inflate(parent.getContext(), R.layout.item_playlist, null);
+        }
 
         Playlist folder = getItem(position);
 

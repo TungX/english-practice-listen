@@ -17,6 +17,7 @@ public class Stores {
     public static Config config;
     public static ArrayList<Playlist> playlists;
     public static ArrayList<FolderMusic> folderMusics;
+    public static int currentNavigation;
     public static synchronized void setMp(MediaPlayer mp){
         Stores.mp = mp;
     }
