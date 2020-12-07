@@ -15,50 +15,66 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="10dp"
+                android:gravity="center">
+
                 <TextView
                     android:id="@+id/list_name"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:text="List name"
-                    android:textSize="20sp"
-                    android:layout_weight="1"/>
+                    android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/add_to_playlist"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/add_playlist"/>
+                    android:text="@string/add_playlist" />
             </LinearLayout>
-            <ListView
+
+            <Button
+                android:id="@+id/play_music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/play_playlist" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/files"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/playlist_area"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@color/white"
-            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/colorGray"
             android:padding="5dp"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/hide_playlist_area"
+                android:id="@+id/cancel_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="@string/cancel"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="textEnd"
+                android:textColor="@color/white" />
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/playlists"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
