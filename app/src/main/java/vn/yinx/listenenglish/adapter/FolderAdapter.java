@@ -40,6 +40,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FolderMusic folder = this.folderMusics.get(position);
         holder.content.setText(folder.getName());
+        holder.avatar.setText(folder.getName().charAt(0));
     }
 
     @Override
@@ -53,12 +54,13 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView content;
+        private TextView content, avatar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             content = itemView.findViewById(R.id.folder_name);
+            avatar = itemView.findViewById(R.id.item_avatar);
         }
 
         @Override

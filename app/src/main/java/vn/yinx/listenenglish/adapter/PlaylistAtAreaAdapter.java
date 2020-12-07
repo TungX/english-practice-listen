@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,17 +14,16 @@ import java.util.ArrayList;
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.entity.FileMusic;
-import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
-public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAdapter.ViewHolder> {
+public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAdapter.ViewHolder> {
 
     private ArrayList<Playlist> playlists;
     private Context context;
 
-    public PlaylistAtHomeAdapter(Context context, ArrayList<Playlist> folderMusics) {
+    public PlaylistAtAreaAdapter(Context context, ArrayList<Playlist> folderMusics) {
         this.playlists = folderMusics;
         this.context = context;
     }
@@ -35,14 +33,18 @@ public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAd
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View view = inflater.inflate(R.layout.item_playlist, parent, false);
-        return new PlaylistAtHomeAdapter.ViewHolder(view);
+        return new PlaylistAtAreaAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlaylistAtHomeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlaylistAtAreaAdapter.ViewHolder holder, int position) {
         Playlist playlist = this.playlists.get(position);
-        holder.content.setText(playlist.getName());
-        holder.avatar.setText(playlist.getName().charAt(0));
+        if(playlist.getId() == -1){
+            holder.content.setText(playlist.getName());
+        }else{
+
+        }
+
     }
 
     @Override
@@ -56,13 +58,12 @@ public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView content, avatar;
+        private TextView content;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             content = itemView.findViewById(R.id.playlist_name);
-            avatar = itemView.findViewById(R.id.item_avatar);
         }
 
         @Override
