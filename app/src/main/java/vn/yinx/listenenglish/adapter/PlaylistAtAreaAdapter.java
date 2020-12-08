@@ -23,8 +23,8 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
     private ArrayList<Playlist> playlists;
     private Context context;
 
-    public PlaylistAtAreaAdapter(Context context, ArrayList<Playlist> folderMusics) {
-        this.playlists = folderMusics;
+    public PlaylistAtAreaAdapter(Context context, ArrayList<Playlist> playlists) {
+        this.playlists = playlists;
         this.context = context;
     }
 
@@ -39,11 +39,8 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
     @Override
     public void onBindViewHolder(@NonNull PlaylistAtAreaAdapter.ViewHolder holder, int position) {
         Playlist playlist = this.playlists.get(position);
-        if(playlist.getId() == -1){
-            holder.content.setText(playlist.getName());
-        }else{
-
-        }
+        holder.content.setText(playlist.getName());
+        holder.avatar.setText(playlist.getName().charAt(0) + "");
 
     }
 
@@ -58,12 +55,13 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView content;
+        private TextView content, avatar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             content = itemView.findViewById(R.id.playlist_name);
+            avatar = itemView.findViewById(R.id.item_avatar);
         }
 
         @Override

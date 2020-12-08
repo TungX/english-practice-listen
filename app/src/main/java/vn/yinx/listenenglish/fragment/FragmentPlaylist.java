@@ -16,6 +16,7 @@ import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.adapter.FileAdapter;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
+import vn.yinx.listenenglish.adapter.PlaylistAtAreaAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
 import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
@@ -28,6 +29,8 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     private ListMusic listMusic;
     private FileAdapter fileAdapter;
     private LinearLayout playlistArea;
+    private RecyclerView playlists;
+    private PlaylistAtAreaAdapter playlistAtAreaAdapter;
 
     public FragmentPlaylist(ListMusic listMusic) {
         if(listMusic == null){
@@ -79,6 +82,12 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
         cancelBtn.setOnClickListener(this);
 
         playlistArea = findViewById(R.id.playlist_area);
+
+        LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        playlists = findViewById(R.id.playlists);
+        playlists.setLayoutManager(layoutManagerPlaylist);
+        playlistAtAreaAdapter = new PlaylistAtAreaAdapter(mContext, Stores.playlists);
+        playlists.setAdapter(playlistAtAreaAdapter);
     }
 
     @Override

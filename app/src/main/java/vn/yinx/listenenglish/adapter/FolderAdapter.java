@@ -40,7 +40,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FolderMusic folder = this.folderMusics.get(position);
         holder.content.setText(folder.getName());
-        holder.avatar.setText(folder.getName().charAt(0));
+        holder.avatar.setText(folder.getName().charAt(0)+"");
     }
 
     @Override

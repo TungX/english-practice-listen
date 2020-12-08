@@ -1,6 +1,7 @@
 package vn.yinx.listenenglish.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,10 @@ public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAd
     @Override
     public void onBindViewHolder(@NonNull PlaylistAtHomeAdapter.ViewHolder holder, int position) {
         Playlist playlist = this.playlists.get(position);
-        holder.content.setText(playlist.getName());
-        holder.avatar.setText(playlist.getName().charAt(0));
+        if(playlist.getName() != null){
+            holder.content.setText(playlist.getName());
+            holder.avatar.setText(""+playlist.getName().charAt(0));
+        }
     }
 
     @Override
