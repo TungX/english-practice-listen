@@ -40,7 +40,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FolderMusic folder = this.folderMusics.get(position);
         holder.content.setText(folder.getName());
-        holder.avatar.setText(folder.getName().charAt(0)+"");
+        holder.avatar.setText(folder.getName().charAt(0) + "");
     }
 
     @Override
@@ -50,6 +50,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
+        if (this.folderMusics == null)
+            return 0;
         return folderMusics.size();
     }
 
@@ -74,13 +76,14 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
                     FileMusic fileMusic = new FileMusic();
                     ArrayList<FileMusic> files = fileMusic.getAll("SELECT * FROM " + fileMusic.getTableName() + " WHERE folder_id = " + folder.getId());
                     folder.setFiles(files);
+
+                    for (int i = 0; i < 10; i++) {
+                        FileMusic fm = new FileMusic();
+                        fm.setName("File " + (i + 1));
+                        files.add(fm);
+                    }
                 }
                 listMusic.setFiles(folder.getFiles());
-                for (int i = 0; i < 10; i++) {
-                    FileMusic fm = new FileMusic();
-                    fm.setName("File " + (i + 1));
-                    listMusic.getFiles().add(fm);
-                }
                 Stores.mainActivity.openFragment(FragmentPlaylist.newInstance(listMusic));
                 Stores.currentNavigation = R.id.navigation_playlist;
             } catch (Exception e) {

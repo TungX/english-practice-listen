@@ -51,7 +51,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/colorGray" />
+                android:background="@color/color_gray" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/folders"
@@ -76,7 +76,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/colorGray" />
+                android:background="@color/color_gray" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/playlists"

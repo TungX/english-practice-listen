@@ -1,16 +1,20 @@
 package vn.yinx.listenenglish.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
@@ -20,6 +24,7 @@ import vn.yinx.listenenglish.adapter.PlaylistAtAreaAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
 import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
+import vn.yinx.listenenglish.entity.Playlist;
 
 public class FragmentPlaylist extends BaseFragment implements View.OnClickListener {
     private TextView listName, addToPlaylist, cancelBtn;
@@ -29,15 +34,17 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     private ListMusic listMusic;
     private FileAdapter fileAdapter;
     private LinearLayout playlistArea;
+    private FrameLayout wrapper;
     private RecyclerView playlists;
     private PlaylistAtAreaAdapter playlistAtAreaAdapter;
 
     public FragmentPlaylist(ListMusic listMusic) {
-        if(listMusic == null){
-            this.listMusic = FragmentPlaylist.listPlaying;
-        }else{
-            this.listMusic = listMusic;
-        }
+//        if (listMusic == null) {
+//            this.listMusic = FragmentPlaylist.listPlaying;
+//        } else {
+//            this.listMusic = listMusic;
+//        }
+        this.listMusic = listMusic;
 
     }
 
@@ -63,6 +70,7 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     @Override
     public void init() {
         listName = findViewById(R.id.list_name);
+        wrapper = findViewById(R.id.wrapper);
         listName.setText(listMusic.getName());
         addToPlaylist = findViewById(R.id.add_to_playlist);
         files = findViewById(R.id.files);
@@ -86,8 +94,16 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
         LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         playlists = findViewById(R.id.playlists);
         playlists.setLayoutManager(layoutManagerPlaylist);
-        playlistAtAreaAdapter = new PlaylistAtAreaAdapter(mContext, Stores.playlists);
+        ArrayList<Playlist> items = new ArrayList<>();
+        items.add(new Playlist());
+        items.addAll(Stores.playlists);
+        playlistAtAreaAdapter = new PlaylistAtAreaAdapter(mContext, this, items);
         playlists.setAdapter(playlistAtAreaAdapter);
+    }
+
+    public void hidePlayListArea(){
+        playlistArea.setVisibility(View.GONE);
+        wrapper.setBackgroundColor(0);
     }
 
     @Override
@@ -96,10 +112,20 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
             case R.id.play_music:
                 break;
             case R.id.add_to_playlist:
-                playlistArea.setVisibility(View.VISIBLE);
+                int numberSelected = 0;
+                for (FileMusic fileMusic : listMusic.getFiles()) {
+                    if (fileMusic.isChecked())
+                        numberSelected++;
+                }
+                if (numberSelected > 0){
+                    wrapper.setBackgroundColor(Color.parseColor("#A6A6A6"));
+                    playlistArea.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case R.id.cancel_button:
                 playlistArea.setVisibility(View.GONE);
+                wrapper.setBackgroundColor(0);
                 break;
         }
     }

@@ -9,9 +9,18 @@ public class FileMusic extends EntityBase{
     private String _audioPath;
     private String _lyric;
     private long _folderId;
+    private boolean isChecked = false;
     private ArrayList<Sentence> sentences;
     {
         this.tableName = "files";
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public String getName() {

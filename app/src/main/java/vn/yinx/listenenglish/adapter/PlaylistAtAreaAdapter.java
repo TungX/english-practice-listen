@@ -22,26 +22,32 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
 
     private ArrayList<Playlist> playlists;
     private Context context;
+    private FragmentPlaylist fragmentPlaylist;
 
-    public PlaylistAtAreaAdapter(Context context, ArrayList<Playlist> playlists) {
+    public PlaylistAtAreaAdapter(Context context, FragmentPlaylist fragmentPlaylist, ArrayList<Playlist> playlists) {
         this.playlists = playlists;
         this.context = context;
+        this.fragmentPlaylist = fragmentPlaylist;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        View view = inflater.inflate(R.layout.item_playlist, parent, false);
+        View view = inflater.inflate(R.layout.item_playlist_area, parent, false);
         return new PlaylistAtAreaAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistAtAreaAdapter.ViewHolder holder, int position) {
         Playlist playlist = this.playlists.get(position);
-        holder.content.setText(playlist.getName());
-        holder.avatar.setText(playlist.getName().charAt(0) + "");
-
+        if(playlist.getId() == -1){
+            holder.content.setText(R.string.create_playlist);
+            holder.avatar.setText("+");
+        }else{
+            holder.content.setText(playlist.getName());
+            holder.avatar.setText(playlist.getName().charAt(0) + "");
+        }
     }
 
     @Override
@@ -67,26 +73,12 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Playlist folder = playlists.get(position);
-            ListMusic listMusic = new ListMusic();
-            listMusic.setName(folder.getName());
-            try {
-                if (folder.getFiles() == null) {
-                    FileMusic fileMusic = new FileMusic();
-                    ArrayList<FileMusic> files = fileMusic.getAll("SELECT * FROM " + fileMusic.getTableName() + " WHERE folder_id = " + folder.getId());
-                    folder.setFiles(files);
-                }
-                listMusic.setFiles(folder.getFiles());
-                for (int i = 0; i < 10; i++) {
-                    FileMusic fm = new FileMusic();
-                    fm.setName("File " + (i + 1));
-                    listMusic.getFiles().add(fm);
-                }
-                Stores.mainActivity.openFragment(FragmentPlaylist.newInstance(listMusic));
-                Stores.currentNavigation = R.id.navigation_playlist;
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(position == 0){
+
+            }else{
+                fragmentPlaylist.hidePlayListArea();
             }
+
         }
     }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Playlist extends EntityBase {
     {
         this.tableName = "playlists";
+        this.id = -1;
     }
     private String _name;
     private ArrayList<FileMusic> files;

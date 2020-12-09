@@ -15,5 +15,6 @@
     <string name="cancel">Cancel</string>
 
     <string name="add_playlist">Add to playlist</string>
+    <string name="create_playlist">Create playlist</string>
     <string name="play_playlist">Play playlist</string>
 </resources>

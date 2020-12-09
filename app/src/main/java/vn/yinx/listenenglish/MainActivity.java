@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < 10; i++) {
                 Playlist p1 = new Playlist();
                 p1.setName("Playlist " + (i + 1));
+                p1.setId(Stores.playlists.size());
                 Stores.playlists.add(p1);
             }
         } catch (Exception e) {

@@ -55,6 +55,8 @@ public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAd
 
     @Override
     public int getItemCount() {
+        if(this.playlists == null)
+            return 0;
         return this.playlists.size();
     }
 

@@ -4,16 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".fragment.FragmentPlaylist">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:id="@+id/wrapper">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -58,11 +61,9 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/colorGray"
-            android:padding="5dp"
+            android:background="@color/white"
             android:orientation="vertical"
+            android:padding="10dp"
             android:visibility="gone">
 
             <TextView
@@ -71,8 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="@string/cancel"
-                android:textAlignment="textEnd"
-                android:textColor="@color/white" />
+                android:textAlignment="textEnd" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/playlists"

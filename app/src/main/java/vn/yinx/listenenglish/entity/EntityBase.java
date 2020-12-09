@@ -55,7 +55,7 @@ public class EntityBase<T> {
             }
 
         }
-        sb.deleteCharAt(sb.length() - 1);
+        sb.deleteCharAt(sb.length() - 2);
         sb.append(")");
         Log.d("DataBase", sb.toString());
         return sb.toString();
