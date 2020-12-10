@@ -25,6 +25,11 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         this.files = files;
     }
 
+    public void updateFiles(ArrayList<FileMusic> files){
+        this.files = files;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -2,7 +2,17 @@ package vn.yinx.listenenglish.util;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import vn.yinx.listenenglish.entity.Sentence;
 
 public class TextUtils {
     public static String toAttribute(String field){
@@ -45,5 +55,54 @@ public class TextUtils {
             sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
         }
         return sb.toString();
+    }
+
+    public static ArrayList<Sentence> readSentences(File fi) throws Exception {
+        FileInputStream fis = new FileInputStream(fi);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        String line;
+        ArrayList<Sentence> sentences = new ArrayList<>();
+        Pattern patternSize = Pattern.compile("(\\d+)");
+        Pattern patternTime = Pattern.compile("(\\d+(\\.\\d+)?)");
+        Pattern patternContent = Pattern.compile("\"(.*)\"$");
+
+        while((line = br.readLine()) != null) {
+            if(line.trim().startsWith("name") && line.contains("\"sentences\"")) {
+                br.readLine();
+                br.readLine();
+                line = br.readLine();
+                Matcher matcher = patternSize.matcher(line);
+                if(!matcher.find()) {
+                    break;
+                }
+                int size = Integer.parseInt(matcher.group(1));
+                for(int i = 0; i < size; i++) {
+                    Sentence sentence = new Sentence();
+                    br.readLine();
+                    line = br.readLine();
+                    matcher = patternTime.matcher(line);
+                    if(matcher.find()) {
+                        double time = Double.parseDouble(matcher.group(0));
+                        sentence.setStart((int) (time*1000));
+                    }
+                    line = br.readLine();
+                    matcher = patternTime.matcher(line);
+                    if(matcher.find()) {
+                        double time = Double.parseDouble(matcher.group(0));
+                        sentence.setEnd((int) (time*1000));
+                    }
+                    line = br.readLine();
+                    matcher = patternContent.matcher(line.trim());
+                    if(matcher.find()) {
+                        sentence.setContent(matcher.group(1));
+                        sentences.add(sentence);
+                    }
+                }
+                break;
+            }
+        }
+        fis.close();
+        br.close();
+        return sentences;
     }
 }

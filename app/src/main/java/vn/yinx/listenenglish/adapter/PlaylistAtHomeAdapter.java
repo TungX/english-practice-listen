@@ -19,6 +19,7 @@ import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.entity.Playlist;
+import vn.yinx.listenenglish.entity.PlaylistHasFileMusic;
 import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
 public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAdapter.ViewHolder> {
@@ -73,21 +74,18 @@ public class PlaylistAtHomeAdapter extends RecyclerView.Adapter<PlaylistAtHomeAd
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Playlist folder = playlists.get(position);
-            ListMusic listMusic = new ListMusic();
-            listMusic.setName(folder.getName());
+            Playlist playlist = playlists.get(position);
+            PlaylistHasFileMusic playlistHasFileMusic = new PlaylistHasFileMusic();
+            ListMusic listMusic = new ListMusic("playlist");
+            listMusic.setName(playlist.getName());
             try {
-                if (folder.getFiles() == null) {
-                    FileMusic fileMusic = new FileMusic();
-                    ArrayList<FileMusic> files = fileMusic.getAll("SELECT * FROM " + fileMusic.getTableName() + " WHERE folder_id = " + folder.getId());
-                    folder.setFiles(files);
-                }
-                listMusic.setFiles(folder.getFiles());
-                for (int i = 0; i < 10; i++) {
-                    FileMusic fm = new FileMusic();
-                    fm.setName("File " + (i + 1));
-                    listMusic.getFiles().add(fm);
-                }
+                FileMusic fileMusic = new FileMusic();
+                String query = "SELECT A.* FROM fileTable AS A INNER JOIN playlistHasFileTable AS B ON A.id = B.file_id WHERE B.playlist_id = "+playlist.getId();
+                query = query.replace("fileTable", fileMusic.getTableName()).replace("playlistHasFileTable", playlistHasFileMusic.getTableName());
+                Log.d("PlayListAtHome", query);
+                ArrayList<FileMusic> files = fileMusic.getAll(query);
+                playlist.setFiles(files);
+                listMusic.setFiles(playlist.getFiles());
                 Stores.mainActivity.openFragment(FragmentPlaylist.newInstance(listMusic));
                 Stores.currentNavigation = R.id.navigation_playlist;
             } catch (Exception e) {

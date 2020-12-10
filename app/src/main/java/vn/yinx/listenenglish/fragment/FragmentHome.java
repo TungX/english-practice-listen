@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +16,13 @@ import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
 
-public class FragmentHome extends BaseFragment implements View.OnClickListener{
+public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private LinearLayout folderArea;
     private FolderAdapter folderAdapter;
     private PlaylistAtHomeAdapter playlistAtHomeAdapter;
     private RecyclerView folders, playlists;
+    private TextView scan;
+
     public static FragmentHome newInstance() {
         FragmentHome fragment = new FragmentHome();
         Bundle args = new Bundle();
@@ -38,6 +41,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
     @Override
     public void init() {
         folders = findViewById(R.id.folders);
@@ -53,6 +57,9 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         playlists.setLayoutManager(layoutManagerPlaylist);
         playlistAtHomeAdapter = new PlaylistAtHomeAdapter(mContext, Stores.playlists);
         playlists.setAdapter(playlistAtHomeAdapter);
+
+        scan = findViewById(R.id.scan_audio);
+        scan.setOnClickListener(this);
 //        File sdCard = Environment.getStorageDirectory();
 //        Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
 //        ArrayList<File> files = new ArrayList<>();
@@ -71,13 +78,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_showmore:
-                if(folderArea.getVisibility() == View.GONE){
+                if (folderArea.getVisibility() == View.GONE) {
                     folderArea.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     folderArea.setVisibility(View.GONE);
                 }
+                break;
+            case R.id.scan_audio:
+                break;
         }
     }
 }

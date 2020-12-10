@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<item
+    android:id="@+id/menu_add_to_playlist"
+    android:title="@string/add_playlist" />
+<item
+    android:id="@+id/menu_remove_playlist"
+    android:title="@string/remove_file" />
+</menu>

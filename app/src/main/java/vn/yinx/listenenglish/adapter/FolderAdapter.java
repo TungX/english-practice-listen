@@ -69,18 +69,16 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         public void onClick(View v) {
             int position = getAdapterPosition();
             FolderMusic folder = folderMusics.get(position);
-            ListMusic listMusic = new ListMusic();
+            ListMusic listMusic = new ListMusic("folder");
             listMusic.setName(folder.getName());
             try {
                 if (folder.getFiles() == null) {
                     FileMusic fileMusic = new FileMusic();
                     ArrayList<FileMusic> files = fileMusic.getAll("SELECT * FROM " + fileMusic.getTableName() + " WHERE folder_id = " + folder.getId());
                     folder.setFiles(files);
-
-                    for (int i = 0; i < 10; i++) {
-                        FileMusic fm = new FileMusic();
-                        fm.setName("File " + (i + 1));
-                        files.add(fm);
+                } else {
+                    for (FileMusic f : folder.getFiles()) {
+                        f.setChecked(false);
                     }
                 }
                 listMusic.setFiles(folder.getFiles());

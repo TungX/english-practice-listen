@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
-import vn.yinx.listenenglish.entity.FileMusic;
-import vn.yinx.listenenglish.entity.ListMusic;
+import vn.yinx.listenenglish.dialog.CreatePlaylistDialog;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 
@@ -28,6 +26,11 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
         this.playlists = playlists;
         this.context = context;
         this.fragmentPlaylist = fragmentPlaylist;
+    }
+
+    public void addPlaylist(Playlist playlist){
+        this.playlists.add(playlist);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -74,9 +77,9 @@ public class PlaylistAtAreaAdapter extends RecyclerView.Adapter<PlaylistAtAreaAd
         public void onClick(View v) {
             int position = getAdapterPosition();
             if(position == 0){
-
+                fragmentPlaylist.showDialogCreatePlaylist();
             }else{
-                fragmentPlaylist.hidePlayListArea();
+                fragmentPlaylist.addToPlaylist(playlists.get(position));
             }
 
         }

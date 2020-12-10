@@ -198,6 +198,17 @@ public class EntityBase<T> {
         db.execSQL(script);
     }
 
+    public void delete() throws Exception {
+        delete("id = "+this.getId());
+    }
+
+    public void delete(String condition) throws Exception {
+        String script = "DELETE FROM " + this.tableName + " WHERE " + condition;
+        //Execute Script.
+        SQLiteDatabase db = DatabaseHelper.getWriteDatabase();
+        db.execSQL(script);
+    }
+
     public String getTableName() {
         return tableName;
     }

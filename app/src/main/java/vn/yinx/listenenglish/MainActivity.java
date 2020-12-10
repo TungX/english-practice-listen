@@ -16,6 +16,9 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
+import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentHome;
@@ -25,6 +28,7 @@ import vn.yinx.listenenglish.fragment.FragmentPlaylist;
 public class MainActivity extends AppCompatActivity {
     private boolean hasPermission = false;
     private BottomNavigationView bottomNavigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,24 +50,31 @@ public class MainActivity extends AppCompatActivity {
         Playlist playlist = new Playlist();
         try {
             Stores.playlists = playlist.getAll();
-            for (int i = 0; i < 10; i++) {
-                Playlist p1 = new Playlist();
-                p1.setName("Playlist " + (i + 1));
-                p1.setId(Stores.playlists.size());
-                Stores.playlists.add(p1);
-            }
         } catch (Exception e) {
+            Stores.playlists = new ArrayList<>();
             e.printStackTrace();
         }
 
         FolderMusic folderMusic = new FolderMusic();
         try {
             Stores.folderMusics = folderMusic.getAll();
-            for (int i = 0; i < 10; i++) {
-                FolderMusic fm = new FolderMusic();
-                fm.setName("Music " + (i + 1));
-                Stores.folderMusics.add(fm);
-            }
+            Log.d("MainActivity", "Folder music size: " + Stores.folderMusics.size());
+//            if (Stores.folderMusics.isEmpty()) {
+//                for (int i = 0; i < 10; i++) {
+//                    FolderMusic fm = new FolderMusic();
+//                    fm.setName("Music " + (i + 1));
+//                    long id = fm.create();
+//                    fm.setId(id);
+//                    Stores.folderMusics.add(fm);
+//                    for (int j = 0; j < 5; j++) {
+//                        FileMusic fileMusic = new FileMusic();
+//                        fileMusic.setName("File music of " + id + " at " + (j + 1));
+//                        fileMusic.setFolderId(id);
+//                        fileMusic.create();
+//                    }
+//                }
+//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if(item.getItemId() == Stores.currentNavigation){
+                    if (item.getItemId() == Stores.currentNavigation) {
                         return true;
                     }
                     Stores.currentNavigation = item.getItemId();

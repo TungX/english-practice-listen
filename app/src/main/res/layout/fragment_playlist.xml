@@ -32,12 +32,11 @@
                     android:layout_weight="1"
                     android:text="List name"
                     android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/add_to_playlist"
+                <ImageView
+                    android:id="@+id/menu"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/add_playlist" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/menu_icon"/>
             </LinearLayout>
 
             <Button
