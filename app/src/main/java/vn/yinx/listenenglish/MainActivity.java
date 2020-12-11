@@ -59,21 +59,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             Stores.folderMusics = folderMusic.getAll();
             Log.d("MainActivity", "Folder music size: " + Stores.folderMusics.size());
-//            if (Stores.folderMusics.isEmpty()) {
-//                for (int i = 0; i < 10; i++) {
-//                    FolderMusic fm = new FolderMusic();
-//                    fm.setName("Music " + (i + 1));
-//                    long id = fm.create();
-//                    fm.setId(id);
-//                    Stores.folderMusics.add(fm);
-//                    for (int j = 0; j < 5; j++) {
-//                        FileMusic fileMusic = new FileMusic();
-//                        fileMusic.setName("File music of " + id + " at " + (j + 1));
-//                        fileMusic.setFolderId(id);
-//                        fileMusic.create();
-//                    }
-//                }
-//            }
 
         } catch (Exception e) {
             e.printStackTrace();

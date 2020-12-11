@@ -1,6 +1,9 @@
 package vn.yinx.listenenglish.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +14,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
+import vn.yinx.listenenglish.entity.FolderMusic;
 
 public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private LinearLayout folderArea;
@@ -87,7 +95,45 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.scan_audio:
+                File sdCard = Environment.getExternalStorageDirectory();
+                ArrayList<File> files = new ArrayList<>();
+                Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
+
+                loadAudioFiles(files, sdCard);
+                try{
+                    sdCard = Environment.getStorageDirectory();
+                    Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
+                    loadAudioFiles(files, sdCard);
+                }catch (Exception e){
+
+                }
+                HashMap<String, FolderMusic> folers = new HashMap<>();
+                for(File f: files){
+                    if(folers.containsKey(f.getParentFile().getAbsolutePath())){
+//                        folers.get()
+                    }
+//                    File lyric = new File(f.getAbsolutePath().replace("mp3", "TextGrid"));
+//                    if(!lyric.isFile()){
+//                        continue;
+//                    }
+                    Log.d("MainActivityOnCreate", f.getAbsolutePath());
+                }
                 break;
+        }
+    }
+
+    private void loadAudioFiles(ArrayList<File> files, File fi) {
+        if(fi.isFile() && fi.getName().toLowerCase().endsWith("mp3")){
+            Log.d("MainActivityOnCreate", fi.getAbsolutePath());
+            files.add(fi);
+            return;
+        }
+        if(!fi.isDirectory()){
+            return;
+        }
+        File[] arrFiles = fi.listFiles();
+        for(File f: arrFiles){
+            loadAudioFiles(files, f);
         }
     }
 }
