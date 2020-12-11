@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +57,19 @@ public class TextUtils {
             sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
         }
         return sb.toString();
+    }
+
+    public static String checksum(File fi) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        DigestInputStream dis = new DigestInputStream(new FileInputStream(fi), md);
+        while (dis.read() != -1) ; //empty loop to clear the data
+        md = dis.getMessageDigest();
+        dis.close();
+        StringBuilder result = new StringBuilder();
+        for (byte b : md.digest()) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
     }
 
     public static ArrayList<Sentence> readSentences(File fi) throws Exception {

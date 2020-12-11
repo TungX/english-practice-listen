@@ -15,7 +15,7 @@ import android.widget.SeekBar;
 import java.io.File;
 import java.util.ArrayList;
 
-import vn.yinx.listenenglish.AudioRunning;
+import vn.yinx.listenenglish.task.AudioRunning;
 import vn.yinx.listenenglish.adapter.LyricAdapter;
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;

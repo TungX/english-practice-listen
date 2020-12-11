@@ -17,7 +17,7 @@ public class PlaylistHasFileMusic extends EntityBase {
         StringBuffer sb = new StringBuffer();
         sb.append("CREATE TABLE ");
         sb.append(tableName);
-        sb.append("(id INTEGER PRIMARY KEY, file_id INTEGER, playlist_id INTEGER, UNIQUE (file_id, playlist_id)");
+        sb.append("(id INTEGER PRIMARY KEY, file_id INTEGER, playlist_id INTEGER, UNIQUE (file_id, playlist_id) )");
         Log.d("DataBase", sb.toString());
         return sb.toString();
     }

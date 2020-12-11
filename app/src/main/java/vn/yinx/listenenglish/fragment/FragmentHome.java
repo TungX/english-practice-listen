@@ -3,6 +3,8 @@ package vn.yinx.listenenglish.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +27,11 @@ import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.Stores;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
+import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
+import vn.yinx.listenenglish.entity.Sentence;
+import vn.yinx.listenenglish.task.ScanTask;
+import vn.yinx.listenenglish.util.TextUtils;
 
 public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private LinearLayout folderArea;
@@ -30,12 +39,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private PlaylistAtHomeAdapter playlistAtHomeAdapter;
     private RecyclerView folders, playlists;
     private TextView scan;
-
+    private boolean scanning = false;
+    private static FragmentHome fragment;
     public static FragmentHome newInstance() {
-        FragmentHome fragment = new FragmentHome();
+        if(FragmentHome.fragment !=null)
+            return FragmentHome.fragment;
+        FragmentHome.fragment = new FragmentHome();
         Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        FragmentHome.fragment.setArguments(args);
+        return FragmentHome.fragment;
     }
 
     @Override
@@ -84,6 +96,40 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
 
     }
 
+    public synchronized boolean isScanning(){
+        return scanning;
+    }
+
+    public synchronized void finish(){
+        scanning = false;
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                scan.setText(R.string.scan);
+
+            }
+        });
+
+    }
+
+    public void showFolderArea(){
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                folderArea.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void resetFolderAdapter(){
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                folderAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -95,45 +141,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.scan_audio:
-                File sdCard = Environment.getExternalStorageDirectory();
-                ArrayList<File> files = new ArrayList<>();
-                Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
-
-                loadAudioFiles(files, sdCard);
-                try{
-                    sdCard = Environment.getStorageDirectory();
-                    Log.d("MainActivityOnCreate", "sdCard: " + sdCard.getAbsolutePath());
-                    loadAudioFiles(files, sdCard);
-                }catch (Exception e){
-
+                Log.d("Onclick", "request scan");
+                if (isScanning()) {
+                    break;
                 }
-                HashMap<String, FolderMusic> folers = new HashMap<>();
-                for(File f: files){
-                    if(folers.containsKey(f.getParentFile().getAbsolutePath())){
-//                        folers.get()
-                    }
-//                    File lyric = new File(f.getAbsolutePath().replace("mp3", "TextGrid"));
-//                    if(!lyric.isFile()){
-//                        continue;
-//                    }
-                    Log.d("MainActivityOnCreate", f.getAbsolutePath());
-                }
+                scanning = true;
+                scan.setText(R.string.scanning);
+                new ScanTask(this).start();
                 break;
         }
     }
 
-    private void loadAudioFiles(ArrayList<File> files, File fi) {
-        if(fi.isFile() && fi.getName().toLowerCase().endsWith("mp3")){
-            Log.d("MainActivityOnCreate", fi.getAbsolutePath());
-            files.add(fi);
-            return;
-        }
-        if(!fi.isDirectory()){
-            return;
-        }
-        File[] arrFiles = fi.listFiles();
-        for(File f: arrFiles){
-            loadAudioFiles(files, f);
-        }
-    }
+
 }

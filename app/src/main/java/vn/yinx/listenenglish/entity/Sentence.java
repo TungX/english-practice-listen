@@ -12,13 +12,22 @@ public class Sentence {
     private boolean isActive = false;
     private boolean isRepeating = false;
 
-    public Sentence(){
+    public Sentence() {
 
     }
+
     public Sentence(JSONObject data) throws Exception {
         content = data.getString("content");
         start = data.getInt("start");
         end = data.getInt("end");
+    }
+
+    public JSONObject toObject() throws Exception {
+        JSONObject data = new JSONObject();
+        data.put("content", this.content);
+        data.put("start", this.start);
+        data.put("end", this.end);
+        return data;
     }
 
     public boolean isActive() {

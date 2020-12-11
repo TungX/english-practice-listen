@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "Folder music size: " + Stores.folderMusics.size());
 
         } catch (Exception e) {
+            Stores.folderMusics = new ArrayList<>();
             e.printStackTrace();
         }
     }
