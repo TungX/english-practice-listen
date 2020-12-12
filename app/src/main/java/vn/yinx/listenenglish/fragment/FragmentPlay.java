@@ -15,10 +15,11 @@ import android.widget.SeekBar;
 import java.io.File;
 import java.util.ArrayList;
 
+import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.task.AudioRunning;
 import vn.yinx.listenenglish.adapter.LyricAdapter;
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.entity.Sentence;
 
 public class FragmentPlay extends BaseFragment implements View.OnClickListener{
@@ -30,11 +31,24 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener{
     private LyricAdapter lyricAdapter;
     private ListView lyrics;
     private Button btnPlay;
+    private static FragmentPlay fragmentPlay;
+    public static ListMusic listPlaying;
+    private static int musicPlayingIndex = 0;
     public static FragmentPlay newInstance() {
-        FragmentPlay fragment = new FragmentPlay();
+        if(fragmentPlay != null)
+            return fragmentPlay;
+        fragmentPlay = new FragmentPlay();
         Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        fragmentPlay.setArguments(args);
+        return fragmentPlay;
+    }
+
+    public static synchronized void setListPlaying(ListMusic listMusic, int index){
+        listPlaying = listMusic;
+        if(index < 0 || index >= listMusic.getFiles().size()){
+            index = 0;
+        }
+        musicPlayingIndex = index;
     }
 
     @Override
@@ -59,19 +73,13 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener{
 
 
         ArrayList<Sentence> sentences = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            Sentence sentence = new Sentence();
-            sentence.setStart(i * 2000);
-            sentence.setEnd(sentence.getStart() + 1990);
-            sentence.setContent("Sentence at " + i);
-            sentences.add(sentence);
-        }
+
         lyricAdapter = new LyricAdapter(sentences);
         lyrics.setAdapter(lyricAdapter);
 
 
-//        mp = new MediaPlayer();
-        mp = MediaPlayer.create(mContext, R.raw.kiss_the_rain);
+        mp = new MediaPlayer();
+//        mp = MediaPlayer.create(mContext, R.raw.kiss_the_rain);
         Stores.setMp(mp);
         Stores.setCurrentSentence(0);
         new AudioRunning(this, sentences).start();
@@ -88,8 +96,8 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener{
 //        ArrayList<File> files = new ArrayList<>();
 //        loadAudioFiles(files, sdCard);
         try {
-//            mp.setDataSource(files.get(0).getAbsolutePath());
-//            mp.prepare();
+            mp.setDataSource(listPlaying.getFiles().get(musicPlayingIndex).getAudioPath());
+            mp.prepare();
             mp.start();
         } catch (Exception e) {
             e.printStackTrace();

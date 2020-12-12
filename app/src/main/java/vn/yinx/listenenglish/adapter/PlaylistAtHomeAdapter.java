@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.entity.FileMusic;
-import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.entity.PlaylistHasFileMusic;

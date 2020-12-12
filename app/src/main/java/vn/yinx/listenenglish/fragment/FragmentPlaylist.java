@@ -2,6 +2,7 @@ package vn.yinx.listenenglish.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.adapter.FileAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtAreaAdapter;
 import vn.yinx.listenenglish.dialog.CreatePlaylistDialog;
@@ -33,7 +34,7 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     private ImageView menuIcon;
     private Button playMusic;
     private RecyclerView files;
-    private static ListMusic listPlaying;
+
     private ListMusic listMusic;
     private FileAdapter fileAdapter;
     private LinearLayout playlistArea;
@@ -44,7 +45,7 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
 
     public FragmentPlaylist(ListMusic listMusic) {
         if (listMusic == null) {
-            this.listMusic = FragmentPlaylist.listPlaying;
+            this.listMusic = FragmentPlay.listPlaying;
         } else {
             this.listMusic = listMusic;
         }
@@ -186,6 +187,11 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.play_music:
+                if(Stores.getMp() != null){
+                    Stores.getMp().stop();
+                }
+                FragmentPlay.setListPlaying(this.listMusic, 0);
+                Stores.mainActivity.openFragment(FragmentPlay.newInstance());
                 break;
             case R.id.menu:
                 popup = new PopupMenu(getContext(), this.menuIcon);

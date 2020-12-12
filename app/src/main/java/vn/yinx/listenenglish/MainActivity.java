@@ -18,12 +18,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-import vn.yinx.listenenglish.entity.FileMusic;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentHome;
 import vn.yinx.listenenglish.fragment.FragmentPlay;
 import vn.yinx.listenenglish.fragment.FragmentPlaylist;
+import vn.yinx.listenenglish.util.Stores;
 
 public class MainActivity extends AppCompatActivity {
     private boolean hasPermission = false;

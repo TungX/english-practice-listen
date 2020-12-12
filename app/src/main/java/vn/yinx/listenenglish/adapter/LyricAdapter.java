@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.entity.Sentence;
 
 public class LyricAdapter extends BaseAdapter {

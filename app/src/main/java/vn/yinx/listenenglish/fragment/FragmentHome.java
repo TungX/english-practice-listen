@@ -1,8 +1,6 @@
 package vn.yinx.listenenglish.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -10,28 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import vn.yinx.listenenglish.R;
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.adapter.FolderAdapter;
 import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
-import vn.yinx.listenenglish.entity.FileMusic;
-import vn.yinx.listenenglish.entity.FolderMusic;
-import vn.yinx.listenenglish.entity.Sentence;
 import vn.yinx.listenenglish.task.ScanTask;
-import vn.yinx.listenenglish.util.TextUtils;
 
 public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private LinearLayout folderArea;

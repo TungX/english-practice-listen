@@ -2,7 +2,7 @@ package vn.yinx.listenenglish.task;
 
 import java.util.ArrayList;
 
-import vn.yinx.listenenglish.Stores;
+import vn.yinx.listenenglish.util.Stores;
 import vn.yinx.listenenglish.adapter.LyricAdapter;
 import vn.yinx.listenenglish.entity.Sentence;
 import vn.yinx.listenenglish.fragment.FragmentPlay;
