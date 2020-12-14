@@ -18,8 +18,8 @@ public class LyricAdapter extends BaseAdapter {
 
     private ArrayList<Sentence> sentences;
 
-    public LyricAdapter(ArrayList<Sentence> sentences) {
-        this.sentences = sentences;
+    public LyricAdapter() {
+        this.sentences = new ArrayList<>();
     }
 
     @Override

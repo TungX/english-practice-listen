@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                             openFragment(FragmentPlaylist.newInstance(null));
                             return true;
                         case R.id.music:
+                            FragmentPlay.setListPlaying(-1);
                             openFragment(FragmentPlay.newInstance());
 //                                openFragment(NotificationFragment.newInstance("", ""));
                             return true;

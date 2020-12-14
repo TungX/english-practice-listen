@@ -9,6 +9,7 @@ import vn.yinx.listenenglish.entity.Config;
 import vn.yinx.listenenglish.entity.FolderMusic;
 import vn.yinx.listenenglish.entity.Playlist;
 import vn.yinx.listenenglish.fragment.FragmentPlay;
+import vn.yinx.listenenglish.task.AudioRunning;
 
 public class Stores {
     private static MediaPlayer mp;
@@ -19,6 +20,7 @@ public class Stores {
     public static ArrayList<Playlist> playlists;
     public static ArrayList<FolderMusic> folderMusics;
     public static int currentNavigation;
+    public static AudioRunning audioRunningTask;
     public static synchronized void setMp(MediaPlayer mp){
         Stores.mp = mp;
     }

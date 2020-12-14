@@ -71,7 +71,7 @@ public class FileMusic extends EntityBase {
     }
 
     public ArrayList<Sentence> getSentences() throws Exception {
-        if (sentences == null) {
+        if (sentences == null && _lyric != null) {
             sentences = new ArrayList<>();
             JSONArray jSentences = new JSONArray(_lyric);
             for (int i = 0; i < jSentences.length(); i++) {
