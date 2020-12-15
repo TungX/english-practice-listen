@@ -110,6 +110,9 @@ public class TextUtils {
                     matcher = patternContent.matcher(line.trim());
                     if(matcher.find()) {
                         sentence.setContent(matcher.group(1));
+                        if(sentence.getContent().trim().isEmpty()){
+                            continue;
+                        }
                         sentences.add(sentence);
                     }
                 }

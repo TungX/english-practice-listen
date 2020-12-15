@@ -15,17 +15,22 @@ import java.util.ArrayList;
 
 import vn.yinx.listenenglish.R;
 import vn.yinx.listenenglish.entity.FileMusic;
+import vn.yinx.listenenglish.entity.ListMusic;
+import vn.yinx.listenenglish.fragment.FragmentPlay;
+import vn.yinx.listenenglish.util.Stores;
 
-public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
+public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     private Context context;
     private ArrayList<FileMusic> files;
+    private ListMusic listMusic;
 
-    public FileAdapter(Context context, ArrayList<FileMusic> files) {
+    public FileAdapter(Context context, ListMusic listMusic) {
         this.context = context;
-        this.files = files;
+        this.files = listMusic.getFiles();
+        this.listMusic = listMusic;
     }
 
-    public void updateFiles(ArrayList<FileMusic> files){
+    public void updateFiles(ArrayList<FileMusic> files) {
         this.files = files;
         notifyDataSetChanged();
     }
@@ -43,7 +48,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         FileMusic fileMusic = this.files.get(position);
         holder.content.setText(fileMusic.getName());
         holder.selected.setChecked(fileMusic.isChecked());
-        Log.d("onBindViewHolder", "Checked: "+fileMusic.isChecked());
+        Log.d("onBindViewHolder", "Checked: " + fileMusic.isChecked());
     }
 
     @Override
@@ -62,13 +67,19 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
             content = itemView.findViewById(R.id.file_name);
             selected = itemView.findViewById(R.id.selected);
             selected.setOnClickListener(this);
+            content.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            if(v.getId() == R.id.selected){
+            if (v.getId() == R.id.selected) {
                 files.get(position).setChecked(selected.isChecked());
+                return;
+            }
+            if (v.getId() == R.id.file_name) {
+                FragmentPlay.setListPlaying(listMusic, position);
+                Stores.mainActivity.openFragment(FragmentPlay.newInstance());
             }
         }
     }

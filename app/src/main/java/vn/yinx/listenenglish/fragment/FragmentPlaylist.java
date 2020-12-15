@@ -53,6 +53,7 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
     }
 
     public static FragmentPlaylist newInstance(ListMusic listMusic) {
+        Stores.currentNavigation = R.id.navigation_playlist;
         FragmentPlaylist fragment = new FragmentPlaylist(listMusic);
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -131,7 +132,7 @@ public class FragmentPlaylist extends BaseFragment implements View.OnClickListen
 
         LinearLayoutManager layoutManagerFolder = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         files.setLayoutManager(layoutManagerFolder);
-        fileAdapter = new FileAdapter(mContext, listMusic.getFiles());
+        fileAdapter = new FileAdapter(mContext, listMusic);
         files.setAdapter(fileAdapter);
 
         playMusic = findViewById(R.id.play_music);

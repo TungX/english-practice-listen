@@ -13,9 +13,13 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import vn.yinx.listenenglish.adapter.PlaylistAtHomeAdapter;
 import vn.yinx.listenenglish.entity.ListMusic;
 import vn.yinx.listenenglish.task.AudioRunning;
 import vn.yinx.listenenglish.adapter.LyricAdapter;
@@ -29,7 +33,7 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
     private double startTime = 0;
     private double finalTime = 0;
     private LyricAdapter lyricAdapter;
-    private ListView lyrics;
+    private RecyclerView lyrics;
     private Button btnPlay;
     private static FragmentPlay fragmentPlay;
     public static ListMusic listPlaying;
@@ -38,6 +42,7 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
     private TextView fileName, currentTime, durationTime;
 
     public static FragmentPlay newInstance() {
+        Stores.currentNavigation = R.id.music;
         if (fragmentPlay != null)
             return fragmentPlay;
         fragmentPlay = new FragmentPlay();
@@ -86,13 +91,11 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
         seekbar.setClickable(false);
         currentTime = findViewById(R.id.current_time);
         durationTime = findViewById(R.id.duration_time);
-        ArrayList<Sentence> sentences = new ArrayList<>();
-        lyricAdapter = new LyricAdapter();
-        lyrics.setAdapter(lyricAdapter);
         playMusic();
     }
 
     public void playMusic() {
+        Log.d("playMusic", "requestPlayIndex: "+requestPlayIndex);
         if (requestPlayIndex > -1) {
             musicPlayingIndex = requestPlayIndex;
             if (Stores.audioRunningTask != null) {
@@ -115,6 +118,10 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
                 mp.start();
                 Stores.audioRunningTask = new AudioRunning(this, mp, listPlaying.getFiles().get(musicPlayingIndex).getSentences());
                 Stores.audioRunningTask.start();
+                LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                lyrics.setLayoutManager(layoutManagerPlaylist);
+                lyricAdapter = new LyricAdapter(mContext, listPlaying.getFiles().get(musicPlayingIndex).getSentences());
+                lyrics.setAdapter(lyricAdapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,7 +136,7 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
 
     long startTouch = 0;
 
-    public void updateSeek(int time, int position) {
+    public void updateSeek(int time, int current, int position) {
         Log.d("updateSeek", "Time: " + time);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -137,16 +144,17 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
                 seekbar.setProgress(time);
                 currentTime.setText(String.format("%2d:%2d", ((long) time / 60000),
                         TimeUnit.MILLISECONDS.toSeconds((long) (time % 60000))));
-//                    lyricAdapter.notifyDataSetChanged();
+                if (position > -1) {
+                    lyricAdapter.updateStatus(current, position);
+                    lyrics.smoothScrollToPosition(position + 5);
+                }
 
 //                if (System.currentTimeMillis() - startTouch > 3000) {
 //                    lyrics.smoothScrollToPositionFromTop(position, 500);
 //                }
             }
         });
-        if (position > -1) {
 
-        }
 
 
     }
@@ -179,6 +187,14 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
             btnPlay.setBackgroundResource(R.drawable.play);
         } else {
             Stores.getMp().start();
+            btnPlay.setBackgroundResource(R.drawable.pause);
+        }
+    }
+
+    public void updatePlayIcon(){
+        if (Stores.getMp().isPlaying()) {
+            btnPlay.setBackgroundResource(R.drawable.play);
+        } else {
             btnPlay.setBackgroundResource(R.drawable.pause);
         }
     }

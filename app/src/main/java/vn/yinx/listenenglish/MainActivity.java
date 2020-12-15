@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
                             openFragment(FragmentHome.newInstance());
                             return true;
                         case R.id.navigation_playlist:
+                            Log.d("onNavigationItemSelected", "Select playlist");
                             openFragment(FragmentPlaylist.newInstance(null));
                             return true;
                         case R.id.music:
                             FragmentPlay.setListPlaying(-1);
                             openFragment(FragmentPlay.newInstance());
-//                                openFragment(NotificationFragment.newInstance("", ""));
                             return true;
                     }
                     return false;

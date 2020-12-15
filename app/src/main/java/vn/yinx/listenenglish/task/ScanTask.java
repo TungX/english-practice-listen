@@ -55,6 +55,9 @@ public class ScanTask extends Thread {
                         jSentence.put(sentence.toObject());
                     }
                     fileMusic.setLyric(jSentence.toString());
+                    Log.d("MainActivityOnCreate", "load lyric = "+lyric.getAbsolutePath()+" complete");
+                }else{
+                    Log.d("MainActivityOnCreate", "Cannot load lyric = "+lyric.getAbsolutePath());
                 }
 
 //                String hex = TextUtils.checksum(fi);
@@ -66,6 +69,7 @@ public class ScanTask extends Thread {
                     fileMusic.setId(id);
                     fileMusic.update();
                 }
+                Log.d("MainActivityOnCreate", "lyric = "+fileMusic.getLyric());
                 folders.get(folderPath).getFiles().add(fileMusic);
             }
 

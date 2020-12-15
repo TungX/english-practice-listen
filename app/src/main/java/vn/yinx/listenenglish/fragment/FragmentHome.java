@@ -28,6 +28,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private boolean scanning = false;
     private static FragmentHome fragment;
     public static FragmentHome newInstance() {
+        Stores.currentNavigation = R.id.navigation_home;
         if(FragmentHome.fragment !=null)
             return FragmentHome.fragment;
         FragmentHome.fragment = new FragmentHome();
@@ -127,7 +128,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.scan_audio:
-                Log.d("Onclick", "request scan");
                 if (isScanning()) {
                     break;
                 }

@@ -3,6 +3,7 @@ package vn.yinx.listenenglish.entity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.json.JSONArray;
 
@@ -70,7 +71,13 @@ public class FileMusic extends EntityBase {
         this._lyric = _lyric;
     }
 
+    public String getLyric(){
+        return this._lyric;
+    }
+
     public ArrayList<Sentence> getSentences() throws Exception {
+        Log.d("getSentences", "sentence: "+sentences);
+        Log.d("getSentences", "_lyric: "+_lyric);
         if (sentences == null && _lyric != null) {
             sentences = new ArrayList<>();
             JSONArray jSentences = new JSONArray(_lyric);

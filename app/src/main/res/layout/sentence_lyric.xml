@@ -18,10 +18,11 @@
             />
     </LinearLayout>
     <Button
-        android:id="@+id/lyric_sentence_reload"
+        android:id="@+id/lyric_sentence_repeat"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/repeat"
         android:layout_gravity="center"
+        android:visibility="gone"
         />
 </LinearLayout>

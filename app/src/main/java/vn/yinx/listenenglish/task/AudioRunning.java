@@ -14,7 +14,6 @@ public class AudioRunning extends Thread {
     private FragmentPlay fragmentPlay;
     private ArrayList<Sentence> sentences;
     private MediaPlayer mp;
-    private LyricAdapter lyricAdapter;
     private boolean isStopped = false;
 
     public AudioRunning(FragmentPlay fragmentPlay, MediaPlayer mp, ArrayList<Sentence> sentences) {
@@ -42,6 +41,7 @@ public class AudioRunning extends Thread {
                 continue;
             }
             int positionChange = -1;
+            int positionCurrent = Stores.getCurrentSentence();
             int currentTime = this.mp.getCurrentPosition();
             if (sentences != null)
                 for (int i = Stores.getCurrentSentence(); i < sentences.size(); i++) {
@@ -52,17 +52,20 @@ public class AudioRunning extends Thread {
                     if (i == Stores.getCurrentSentence()) {
                         break;
                     }
-                    sentences.get(Stores.getCurrentSentence()).setActive(false);
+                    if (sentences.get(Stores.getCurrentSentence()).isRepeating()) {
+                        Stores.getMp().seekTo(sentences.get(Stores.getCurrentSentence()).getStart());
+                        break;
+                    }
+//                    sentences.get(Stores.getCurrentSentence()).setActive(false);
                     Stores.setCurrentSentence(i);
-                    sentence.setActive(true);
+//                    sentence.setActive(true);
                     positionChange = i;
                     break;
                 }
             if (this.isStopped)
                 return;
-            Log.d("AutoRunning", "Is stopped: " + this.isStopped);
-            this.fragmentPlay.updateSeek(this.mp.getCurrentPosition(), positionChange);
+            this.fragmentPlay.updateSeek(this.mp.getCurrentPosition(), positionCurrent, positionChange);
         }
-
+        this.fragmentPlay.nextMusic();
     }
 }
