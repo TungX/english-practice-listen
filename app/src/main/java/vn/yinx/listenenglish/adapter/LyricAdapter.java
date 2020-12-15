@@ -31,8 +31,15 @@ public class LyricAdapter extends RecyclerView.Adapter<LyricAdapter.ViewHolder> 
         this.sentences = sentences;
         if (this.sentences == null) {
             this.sentences = new ArrayList<>();
-        } else {
-            this.sentences.get(0).setActive(true);
+        }
+        for (Sentence sentence: this.sentences             ) {
+            sentence.setActive(false);
+        }
+        if(this.sentences.size() <= Stores.getCurrentSentence()){
+            Stores.setCurrentSentence(0);
+        }
+        if(!this.sentences.isEmpty()){
+            this.sentences.get(Stores.getCurrentSentence()).setActive(true);
         }
     }
 

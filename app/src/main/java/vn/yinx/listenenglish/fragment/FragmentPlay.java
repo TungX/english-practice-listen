@@ -95,8 +95,9 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
     }
 
     public void playMusic() {
-        Log.d("playMusic", "requestPlayIndex: "+requestPlayIndex);
+        Log.d("playMusic", "requestPlayIndex: " + requestPlayIndex);
         if (requestPlayIndex > -1) {
+            Stores.setCurrentSentence(0);
             musicPlayingIndex = requestPlayIndex;
             if (Stores.audioRunningTask != null) {
                 Stores.audioRunningTask.setStopped();
@@ -116,15 +117,21 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
                 currentTime.setText(" 0: 0");
                 Stores.setCurrentSentence(0);
                 mp.start();
+                btnPlay.setBackgroundResource(R.drawable.pause);
                 Stores.audioRunningTask = new AudioRunning(this, mp, listPlaying.getFiles().get(musicPlayingIndex).getSentences());
                 Stores.audioRunningTask.start();
-                LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                lyrics.setLayoutManager(layoutManagerPlaylist);
-                lyricAdapter = new LyricAdapter(mContext, listPlaying.getFiles().get(musicPlayingIndex).getSentences());
-                lyrics.setAdapter(lyricAdapter);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        try {
+            LinearLayoutManager layoutManagerPlaylist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            lyrics.setLayoutManager(layoutManagerPlaylist);
+            lyricAdapter = new LyricAdapter(mContext, listPlaying.getFiles().get(musicPlayingIndex).getSentences());
+            lyrics.setAdapter(lyricAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         finalTime = Stores.getMp().getDuration();
         seekbar.setMax((int) finalTime);
@@ -137,7 +144,6 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
     long startTouch = 0;
 
     public void updateSeek(int time, int current, int position) {
-        Log.d("updateSeek", "Time: " + time);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -154,7 +160,6 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
 //                }
             }
         });
-
 
 
     }
@@ -174,8 +179,13 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
         if (requestPlayIndex == -1) {
             requestPlayIndex = musicPlayingIndex;
         }
-        if (requestPlayIndex + 1 >= listPlaying.getFiles().size()) {
+        if(listPlaying.getFiles().size() == 1){
             requestPlayIndex = 0;
+            playMusic();
+            return;
+        }
+        if (requestPlayIndex + 1 >= listPlaying.getFiles().size()) {
+            requestPlayIndex = -1;
         }
         requestPlayIndex++;
         playMusic();
@@ -191,7 +201,7 @@ public class FragmentPlay extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    public void updatePlayIcon(){
+    public void updatePlayIcon() {
         if (Stores.getMp().isPlaying()) {
             btnPlay.setBackgroundResource(R.drawable.play);
         } else {
